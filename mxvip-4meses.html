@@ -558,7 +558,56 @@
   <p style="color:#555;">Vendedor #1 · 100% Confiable</p>
 </footer>
 
-<script></script>
+<script>
+  // ── PAYMENT MODAL JS ──────────────────────────
+  function openPayModal()  { 
+    document.getElementById('pay-overlay').classList.add('open'); 
+    document.body.style.overflow='hidden'; 
+  }
+  function closePayModal(e) {
+    if (e && e.target !== document.getElementById('pay-overlay')) return;
+    document.getElementById('pay-overlay').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('keydown', function(e) { 
+    if(e.key==='Escape') { 
+      document.getElementById('pay-overlay').classList.remove('open'); 
+      document.body.style.overflow=''; 
+    } 
+  });
+
+  function toggleSpei() {
+    const d = document.getElementById('spei-details');
+    const a = document.getElementById('spei-arrow');
+    d.classList.toggle('open');
+    a.textContent = d.classList.contains('open') ? '↑' : '↓';
+  }
+
+  function toggleCrypto() {
+    const d = document.getElementById('crypto-details');
+    const a = document.getElementById('crypto-arrow');
+    d.classList.toggle('open');
+    a.textContent = d.classList.contains('open') ? '↑' : '↓';
+  }
+
+  function copyText(text, btnId) {
+    navigator.clipboard.writeText(text).then(function() {
+      const btn = document.getElementById(btnId);
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copiado';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { 
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } 
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(r) { obs.observe(r); });
+</script>
 
 <!-- ── PAYMENT MODAL ── -->
 <div class="pay-overlay" id="pay-overlay" onclick="closePayModal(event)">
